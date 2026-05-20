@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYRA — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+         background:linear-gradient(135deg,#0f0f0f,#3a1c00);font-family:'Poppins',sans-serif;}
+    .card{background:#1a1a1a;border:1px solid rgba(212,175,55,0.35);border-radius:16px;
+          padding:50px 40px;width:360px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);}
+    .brand{font-family:'Playfair Display',serif;font-size:2.4rem;color:#d4af37;letter-spacing:4px;margin-bottom:6px;}
+    .tagline{font-size:0.75rem;color:#888;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;}
+    h2{color:#fff;font-size:1.1rem;font-weight:400;margin-bottom:24px;letter-spacing:1px;}
+    input{width:100%;padding:12px 16px;margin-bottom:14px;border-radius:8px;
+          border:1px solid #333;background:#111;color:#fff;font-size:0.9rem;font-family:'Poppins',sans-serif;}
+    input:focus{outline:none;border-color:#d4af37;}
+    input::placeholder{color:#555;}
+    button{width:100%;padding:13px;background:#d4af37;border:none;border-radius:8px;
+           color:#000;font-weight:700;font-size:0.95rem;letter-spacing:1px;cursor:pointer;
+           transition:0.3s;margin-top:6px;}
+    button:hover{background:#b8962e;}
+    .msg{color:#ff6b6b;font-size:0.82rem;margin-top:10px;min-height:18px;}
+    .footer-link{margin-top:22px;font-size:0.82rem;color:#888;}
+    .footer-link a{color:#d4af37;text-decoration:none;font-weight:600;}
+    .footer-link a:hover{text-decoration:underline;}
+    .divider{border:none;border-top:1px solid #2a2a2a;margin:20px 0;}
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">ZYRA</div>
+  <div class="tagline">Luxury Fashion</div>
+  <h2>Welcome Back</h2>
+  <form onsubmit="loginUser(event)">
+    <input type="email" id="loginEmail" placeholder="Email address" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button type="submit">SIGN IN</button>
+    <p class="msg" id="loginMsg"></p>
+  </form>
+  <hr class="divider">
+  <div class="footer-link">New to ZYRA? <a href="signup.html">Create an account</a></div>
+</div>
+
+<script>
+function loginUser(e) {
+  e.preventDefault();
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const users    = JSON.parse(localStorage.getItem('zyra_users')) || [];
+  const found    = users.find(u => u.email === email && u.password === password);
+  if (found) {
+    localStorage.setItem('currentUser', JSON.stringify(found));
+    window.location.href = 'index.html';
+  } else {
+    document.getElementById('loginMsg').innerText = '⚠️ Invalid email or password.';
+  }
+}
+// If already logged in, go straight to shop
+if (localStorage.getItem('currentUser')) window.location.href = 'index.html';
+</script>
+</body>
+</html>

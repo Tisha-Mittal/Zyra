@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYRA Fashion</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <!-- Login guard -->
+  <script>if(!localStorage.getItem('currentUser')) window.location.href='login.html';</script>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress"></div>
+
+<!-- Loader -->
+<div id="loader"><h1>ZYRA</h1></div>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="header">
+  <div class="logo"><img src="zyra2.jpeg" alt="Zyra Logo"></div>
+  <nav class="nav">
+    <a href="#men-page">MEN</a>
+    <a href="#women-page">WOMEN</a>
+    <a href="#kids-page">KIDS</a>
+    <a href="#shoes-page">SHOES</a>
+    <a href="#perfume-accessories">ACCESSORIES</a>
+    <a href="#contact-page">CONTACT</a>
+  </nav>
+  <div class="header-right">
+    <div class="cart" onclick="window.location.href='checkout.html'">
+      🛍️ <span id="cart-count">0</span>
+    </div>
+    <button onclick="toggleMode()" class="mode-btn">&#9790;</button>
+    <button onclick="logout()" class="mode-btn">Logout</button>
+  </div>
+</header>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <h2>Summer Elegance Sale !</h2>
+    <p class="sub-text">Discover timeless silhouettes and airy fabrics designed to keep you cool while looking effortlessly chic...</p>
+    <h3>UPTO 50% off</h3>
+    <p class="offer-text">on all your favourite products and our best sellers</p>
+    <div id="countdown"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CATEGORIES ═══════════════════ -->
+<section class="categories">
+  <h2>CATEGORIES</h2>
+  <div class="category-grid">
+    <div class="category-card" onclick="document.getElementById('men-page').scrollIntoView({behavior:'smooth'})">
+      <img src="male.jpg" alt="Men">
+      <h3>MEN</h3>
+    </div>
+    <div class="category-card" onclick="document.getElementById('women-page').scrollIntoView({behavior:'smooth'})">
+      <img src="feamle.jpeg" alt="Women">
+      <h3>WOMEN</h3>
+    </div>
+    <div class="category-card" onclick="document.getElementById('kids-page').scrollIntoView({behavior:'smooth'})">
+      <img src="kid.avif" alt="Kids">
+      <h3>KIDS</h3>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SHOES & ACCESSORIES PREVIEW ═══════════════════ -->
+<section id="shoes-accessories">
+  <div class="container">
+    <div class="title">Shoes and Accessories...</div>
+    <div class="grid">
+      <div class="item">
+        <h3>Jewellery</h3>
+        <img src="jwellery.webp" alt="Jewellery">
+      </div>
+      <div class="item">
+        <h3>Perfumes</h3>
+        <img src="perfume.jpg" alt="Perfumes">
+      </div>
+      <div class="item center">
+        <h3>Shoes</h3>
+        <img src="shoes.jpg" alt="Shoes">
+      </div>
+      <div class="item bottom-right">
+        <h3>Handbags &amp; Wallets</h3>
+        <img src="handbags.jpeg" alt="Handbags">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MEN PAGE ═══════════════════ -->
+<section id="men-page">
+  <div class="top-bar"><h1>MEN</h1></div>
+  <h2 class="section-title">CATEGORIES</h2>
+  <section class="men-categories">
+    <div class="men-grid">
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-ethnic'">
+        <img src="traditional.jpeg" alt="Ethnic wear">
+        <p>Ethnic wear</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-shirt'">
+        <img src="shirt.webp" alt="Shirts">
+        <p>Shirts</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-t-shirt'">
+        <img src="t-shirt.jpg" alt="T-shirts">
+        <p>T-shirts</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-jacket'">
+        <img src="jacket.jpg" alt="Jackets">
+        <p>Jackets</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-polos'">
+        <img src="polos.webp" alt="Polos">
+        <p>Polos</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=men-lower'">
+        <img src="white lower.webp" alt="Bottoms">
+        <p>Bottoms</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">BEST-SELLERS</h2>
+  <section class="best-sellers">
+    <div class="product-grid">
+      <div class="product">
+        <img src="black shirt.webp" alt="Black Shirt">
+        <p>Black Shirt</p>
+        <p class="price"><del>₹2999</del> ₹999</p>
+        <p>Fabric : 100% cotton</p>
+        <p>Sizes available : M , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Black Shirt', 999)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="beige over coat.jpg" alt="Over-coats">
+        <p>Over-coats</p>
+        <p class="price"><del>₹4999</del> ₹2999</p>
+        <p>Fabric : Cashmere</p>
+        <p>Sizes available : S, M , L , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Over-coats', 2999)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="white lower.webp" alt="Joggers">
+        <p>Joggers</p>
+        <p class="price"><del>₹999</del> ₹599</p>
+        <p>Fabric : Cotton</p>
+        <p>Sizes available : S, M , L , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Joggers', 599)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="polos.webp" alt="Polos">
+        <p>Polos</p>
+        <p class="price"><del>₹599</del> ₹399</p>
+        <p>Fabric : Cotton pique</p>
+        <p>Sizes available : S, M , L , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Polos', 399)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="cargos.avif" alt="Cargos">
+        <p>Cargos</p>
+        <p class="price"><del>₹1999</del> ₹999</p>
+        <p>Fabric : Polyester blends</p>
+        <p>Sizes available : S, M , L , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Cargos', 999)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="white shirt.webp" alt="White Shirt">
+        <p>White Shirt</p>
+        <p class="price"><del>₹2999</del> ₹1999</p>
+        <p>Fabric : Cotton</p>
+        <p>Sizes available : S, M , L , XL , XXL</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('White Shirt', 1999)">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ═══════════════════ WOMEN PAGE ═══════════════════ -->
+<section id="women-page">
+  <div class="top-bar" style="background:linear-gradient(to right,#d81b60,#ff9ebc)">
+    <h1>WOMEN</h1>
+  </div>
+  <h2 class="section-title">CATEGORIES</h2>
+  <section class="men-categories" style="background:linear-gradient(to bottom,#ffe3ee,#ff3f8f)">
+    <div class="men-grid">
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-ethnic'">
+        <img src="women traditional.jpg" alt="Traditionals">
+        <p>Traditionals</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-tops'">
+        <img src="women tops.webp" alt="Tops">
+        <p>Tops</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-lower'">
+        <img src="women bottoms.jpeg" alt="Bottoms">
+        <p>Bottoms</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-coat'">
+        <img src="over coats women.jpg" alt="Over-coats">
+        <p>Over-coats</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-dresses'">
+        <img src="dresses.webp" alt="Dresses">
+        <p>Dresses</p>
+      </div>
+      <div class="men-item" onclick="window.location.href='products.html?cat=women-sports'">
+        <img src="athleisure.jpeg" alt="Athleisure">
+        <p>Athleisure</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">BEST-SELLERS</h2>
+  <section class="best-sellers">
+    <div class="product-grid">
+      <div class="product">
+        <img src="denims.jpg" alt="Denims">
+        <p>Denims</p>
+        <p class="price"><del>₹2999</del> ₹1499</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Denims', 1499)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="cord-sets.jpeg" alt="Cord-sets">
+        <p>Cord-sets</p>
+        <p class="price"><del>₹5999</del> ₹3499</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Cord-sets', 3499)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="corset.webp" alt="Corset">
+        <p>Corset</p>
+        <p class="price"><del>₹3999</del> ₹2999</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Corset', 2999)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="kurtis.jpg" alt="Kurtis">
+        <p>Kurtis</p>
+        <p class="price"><del>₹1999</del> ₹999</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Kurtis', 999)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="tops bestsellers.avif" alt="Tops">
+        <p>Tops</p>
+        <p class="price"><del>₹999</del> ₹599</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Tops', 599)">BUY NOW</button>
+      </div>
+      <div class="product">
+        <img src="sarees.jpg" alt="Sarees">
+        <p>Sarees</p>
+        <p class="price"><del>₹9999</del> ₹8999</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Sarees', 8999)">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ═══════════════════ KIDS PAGE ═══════════════════ -->
+<section id="kids-page">
+  <div class="kids-top"><h1>KIDS</h1></div>
+  <h2 class="kids-title">CATEGORIES</h2>
+  <section class="kids-categories">
+    <div class="kids-grid">
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kid-infant'">
+        <img src="infant.jpg" alt="Infant">
+        <p>Infant</p>
+      </div>
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kids-toddler'">
+        <img src="toddler.jpg" alt="Toddler">
+        <p>Toddler</p>
+      </div>
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kids-girls'">
+        <img src="toddler girl.webp" alt="Girls">
+        <p>Girls</p>
+      </div>
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kids-boy'">
+        <img src="toddler boy.jpg" alt="Boys">
+        <p>Boys</p>
+      </div>
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kids-schooler'">
+        <img src="schooler.jpg" alt="5-9 years">
+        <p>5–9 years</p>
+      </div>
+      <div class="kids-item" onclick="window.location.href='products.html?cat=kids-teens'">
+        <img src="pre-teen.jpg" alt="9-12 years">
+        <p>9–12 years</p>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="best-title">BEST-SELLERS</h2>
+  <section class="kids-best">
+    <div class="best-grid">
+      <div class="best-item">
+        <img src="best 1.webp" alt="Boys casual">
+        <p class="price"><del>₹999</del> ₹699</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Boys casual', 699)">Buy Now</button>
+      </div>
+      <div class="best-item">
+        <img src="best 2.webp" alt="Girls casual">
+        <p class="price"><del>₹599</del> ₹299</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Girls casual', 299)">Buy Now</button>
+      </div>
+      <div class="best-item">
+        <img src="best 3.jpeg" alt="Girls ethnic">
+        <p class="price"><del>₹999</del> ₹499</p>
+        <p class="rating">⭐⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Girls ethnic', 499)">Buy Now</button>
+      </div>
+      <div class="best-item">
+        <img src="best 4.webp" alt="Boys Ethnic">
+        <p class="price"><del>₹499</del> ₹299</p>
+        <p class="rating">⭐⭐⭐⭐</p>
+        <button class="buy-btn" onclick="addToCart('Boys Ethnic', 299)">Buy Now</button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ═══════════════════ SHOES PAGE ═══════════════════ -->
+<section id="shoes-page">
+  <h1>SHOES</h1>
+
+  <div class="section">
+
+    <div class="card" onclick="window.location.href='products.html?cat=shoes-sports'">
+      <img src="sport shoes.jpg" alt="Sport Shoes">
+      <p>Sport Shoes</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='products.html?cat=shoes-heels'">
+      <img src="heels.webp" alt="Heels">
+      <p>Heels</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='products.html?cat=shoes-sneakers'">
+      <img src="sneakers.avif" alt="Sneakers">
+      <p>Sneakers</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='products.html?cat=shoes-formals'">
+      <img src="formal shoes.jpeg" alt="Formals">
+      <p>Formals</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='products.html?cat=shoes-boots'">
+      <img src="boots.webp" alt="Boots">
+      <p>Boots</p>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════ PERFUMES & ACCESSORIES ═══════════════════ -->
+<section id="perfume-accessories">
+  <!-- PERFUMES -->
+   <h1 style="text-align: center;">PERFUMES</h1>
+  <div class="perfume-grid">
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-woody'">
+    <img src="woody perfumes.jpeg" alt="Woody">
+    <p>Woody</p>
+  </div>
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-floral'">
+    <img src="floral perfume.jpg" alt="Floral">
+    <p>Floral</p>
+  </div>
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-oriental'">
+    <img src="oriental perfumes.webp" alt="Oriental">
+    <p>Oriental</p>
+  </div>
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-chypre'">
+    <img src="chypre perfumes.jpg" alt="Chypre">
+    <p>Chypre</p>
+  </div>
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-fresh'">
+    <img src="fresh perfumes.webp" alt="Fresh">
+    <p>Fresh</p>
+  </div>
+
+  <div class="perfume-item"
+       onclick="window.location.href='products.html?cat=perfume-vanilla'">
+    <img src="vanilla.webp" alt="Vanilla">
+    <p>Vanilla</p>
+  </div>
+
+</div>
+  <!-- ACCESSORIES -->
+  <!-- ACCESSORIES -->
+<section class="accessories-section">
+  <div class="accessories-title">ACCESSORIES TO ELEVATE YOUR OOTD</div>
+
+  <div class="accessories-grid">
+
+    <div class="accessory-item"
+         onclick="window.location.href='products.html?cat=accessories-jewellery'">
+      <img src="males jwellery.jpeg" alt="Jewellery">
+      <p>Jewellery</p>
+      <p class="price"><del>₹2999</del> ₹1999</p>
+      <p class="rating">⭐⭐⭐⭐</p>
+      <button class="buy-btn"
+              onclick="event.stopPropagation(); addToCart('Jewellery', 1999)">
+        BUY NOW
+      </button>
+    </div>
+
+    <div class="accessory-item"
+         onclick="window.location.href='products.html?cat=accessories-handbags'">
+      <img src="handbags female.jpeg" alt="Wallets & Handbags">
+      <p>Wallets & Handbags</p>
+      <p class="price"><del>₹4999</del> ₹3999</p>
+      <p class="rating">⭐⭐⭐⭐⭐</p>
+      <button class="buy-btn"
+              onclick="event.stopPropagation(); addToCart('Handbags', 3999)">
+        BUY NOW
+      </button>
+    </div>
+
+    <div class="accessory-item"
+         onclick="window.location.href='products.html?cat=accessories-belts'">
+      <img src="female belts.webp" alt="Belts">
+      <p>Belts</p>
+      <p class="price"><del>₹299</del> ₹99</p>
+      <p class="rating">⭐⭐⭐</p>
+      <button class="buy-btn"
+              onclick="event.stopPropagation(); addToCart('Belts', 99)">
+        BUY NOW
+      </button>
+    </div>
+
+    <div class="accessory-item"
+         onclick="window.location.href='products.html?cat=accessories-watches'">
+      <img src="male watches.jpeg" alt="Watches">
+      <p>Watches</p>
+      <p class="price"><del>₹9999</del> ₹7999</p>
+      <p class="rating">⭐⭐⭐⭐⭐</p>
+      <button class="buy-btn"
+              onclick="event.stopPropagation(); addToCart('Watches', 7999)">
+        BUY NOW
+      </button>
+    </div>
+
+  </div>
+</section>
+</section>
+
+<!-- ═══════════════════ CONTACT / GIFT CARDS ═══════════════════ -->
+<section id="contact-page" style="display:flex;justify-content:center;background:#6b2d00;padding:40px 0;">
+  <div style="width:360px;background:linear-gradient(to bottom,#8b3e14,#c68c5e);color:white;font-family:'Playfair Display',serif;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+
+    <!-- Gift Card Preview -->
+    <div style="text-align:center;padding:15px 10px;font-family:'Great Vibes',cursive;font-size:20px;background:#8b3e14;">
+      Gift the Joy of Dressing Well...
+    </div>
+    <div style="padding:15px;">
+      <div style="background:#fff;color:#000;border-radius:4px;display:flex;padding:10px;gap:10px;">
+        <div style="width:90px;height:120px;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:3px;">YOUR IMAGE</div>
+        <div style="font-size:11px;">
+          <b>GIFT CARD</b><br>NAME<br>AMOUNT<br><br>
+          <p style="font-size:10px;line-height:1.4;">On this new year, gift your loved ones with Zyra gift cards to elevate their fashion and let them live with the confidence that you do...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift Card Form -->
+    <div style="text-align:center;font-size:22px;margin:15px 0;letter-spacing:2px;">GIFT CARDS</div>
+    <div style="padding:0 15px 15px;">
+      <form id="giftCardForm" onsubmit="submitGiftCard(event)">
+        <label style="font-size:11px;">SENDER'S NAME</label><br>
+        <input type="text" id="gcsenderName" placeholder="Sender's Name" required
+          style="width:100%;margin-bottom:8px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"><br>
+        <label style="font-size:11px;">RECEIVER'S NAME</label><br>
+        <input type="text" id="gcreceiverName" placeholder="Receiver's Name" required
+          style="width:100%;margin-bottom:8px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"><br>
+        <label style="font-size:11px;">SENDER'S PHONE</label><br>
+        <input type="tel" id="gcsenderPhone" placeholder="Sender's Phone" required
+          style="width:100%;margin-bottom:8px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"><br>
+        <label style="font-size:11px;">RECEIVER'S PHONE</label><br>
+        <input type="tel" id="gcreceiverPhone" placeholder="Receiver's Phone" required
+          style="width:100%;margin-bottom:8px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"><br>
+        <label style="font-size:11px;">AMOUNT</label><br>
+        <input type="number" id="gcamount" placeholder="Amount (₹)" required
+          style="width:100%;margin-bottom:8px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"><br>
+        <label style="font-size:11px;">ANY SPECIAL MESSAGE</label><br>
+        <textarea id="gcmessage" placeholder="Your message..."
+          style="width:100%;height:50px;margin-bottom:10px;padding:6px;border-radius:10px;border:none;box-sizing:border-box;"></textarea>
+        <button type="submit" id="gcBtn"
+          style="width:100%;background:#a85b18;border:none;padding:8px;color:white;cursor:pointer;border-radius:6px;font-size:14px;letter-spacing:1px;">
+          APPLY NOW
+        </button>
+        <p id="gcSuccess" style="display:none;color:#dfff00;text-align:center;font-size:13px;margin-top:8px;">✅ Gift Card request submitted successfully!</p>
+        <p id="gcError"   style="display:none;color:#ff6b6b;text-align:center;font-size:12px;margin-top:6px;">❌ Something went wrong. Please try again.</p>
+      </form>
+    </div>
+
+    <!-- Contact Info -->
+    <div style="background:#fff;color:#000;text-align:center;padding:6px;font-size:12px;">CONNECT WITH US</div>
+    <div style="background:#8b3e14;padding:10px;font-size:11px;">
+      For feedback, suggestions and queries, connect with us through our customer help-line number or through our official e-mail id....
+      <div style="background:#f0ff00;color:#000;padding:5px;margin:6px 0;">Helpline number : 12345-54321</div>
+      <div style="background:#f0ff00;color:#000;padding:5px;">Email-id : tishamittal28@gmail.com</div>
+    </div>
+
+    <!-- Feedback Form -->
+    <div style="background:linear-gradient(to bottom,#c68c5e,#f1a340);padding:10px;">
+      <h4 style="text-align:center;font-size:14px;margin-bottom:10px;letter-spacing:1px;">FEEDBACK FORM</h4>
+      <form id="feedbackForm" onsubmit="submitFeedback(event)">
+        <input id="fbname"     placeholder="FULL NAME"  required
+          style="width:100%;margin-bottom:6px;padding:5px;border-radius:5px;border:none;box-sizing:border-box;">
+        <input id="fbaddress"  placeholder="ADDRESS"    required
+          style="width:100%;margin-bottom:6px;padding:5px;border-radius:5px;border:none;box-sizing:border-box;">
+        <input id="fbphone"    placeholder="PHONE NO."  required
+          style="width:100%;margin-bottom:6px;padding:5px;border-radius:5px;border:none;box-sizing:border-box;">
+        <textarea id="fbfeedback" placeholder="FEEDBACK" required
+          style="width:100%;height:50px;padding:5px;border-radius:5px;border:none;box-sizing:border-box;"></textarea>
+        <div style="margin:8px 0;">
+          <p style="margin:5px 0;font-size:12px;">Rate Us</p>
+          <div class="stars">
+            <input type="radio" name="rating" value="5" id="star5"><label for="star5">&#9733;</label>
+            <input type="radio" name="rating" value="4" id="star4"><label for="star4">&#9733;</label>
+            <input type="radio" name="rating" value="3" id="star3"><label for="star3">&#9733;</label>
+            <input type="radio" name="rating" value="2" id="star2"><label for="star2">&#9733;</label>
+            <input type="radio" name="rating" value="1" id="star1"><label for="star1">&#9733;</label>
+          </div>
+        </div>
+        <button type="submit" id="fbBtn"
+          style="width:100%;margin-top:6px;background:#000;color:#fff;padding:6px;border:none;border-radius:5px;cursor:pointer;">
+          SUBMIT FEEDBACK
+        </button>
+        <p id="fbSuccess" style="display:none;color:#000;text-align:center;font-size:12px;margin-top:6px;">✅ Feedback submitted successfully!</p>
+        <p id="fbError"   style="display:none;color:red;text-align:center;font-size:12px;margin-top:6px;">❌ Something went wrong. Please try again.</p>
+      </form>
+    </div>
+    <div style="text-align:center;font-size:10px;padding:6px;">BECAUSE WE VALUE YOUR OPINIONS!</div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <p>&copy; 2026 Zyra Fashion. Designed by Tisha.</p>
+</footer>
+
+<!-- ═══════════════════ LOGIN MODAL (fallback) ═══════════════════ -->
+<div id="loginModal" class="login-modal">
+  <div class="login-box" style="position:relative;">
+    <span class="close" onclick="closeLogin()">&times;</span>
+    <h2>Welcome Back</h2>
+    <form onsubmit="loginUser(event)">
+      <input type="email"    id="loginEmail"    placeholder="Email"    required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Sign In</button>
+      <p id="loginMsg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script src="script.js"></script>
+<script>
+// Countdown to sale end (30 days from now)
+(function() {
+  const end = new Date();
+  end.setDate(end.getDate() + 30);
+  function tick() {
+    const diff = end - new Date();
+    if (diff <= 0) { document.getElementById('countdown').innerText = 'Sale Ended!'; return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('countdown').innerText =
+      'Ends in: ' + d + 'd ' + h + 'h ' + m + 'm ' + s + 's';
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>

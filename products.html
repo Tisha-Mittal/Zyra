@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYRA — Collection</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    .product-page-container{padding:40px 5%;max-width:1200px;margin:auto;}
+    .page-title{font-family:'Playfair Display',serif;text-align:center;font-size:2.8rem;
+                margin-bottom:8px;color:#111;text-transform:uppercase;}
+    .page-subtitle{text-align:center;color:#666;margin-bottom:40px;font-style:italic;}
+    .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:30px;}
+    .product-card{background:#fff;padding:20px;border-radius:14px;border:1px solid #f0f0f0;
+                  transition:0.4s;text-align:center;}
+    .product-card:hover{transform:translateY(-8px);box-shadow:0 15px 30px rgba(0,0,0,0.1);}
+    .product-card img{width:100%;height:300px;object-fit:cover;border-radius:10px;margin-bottom:14px;}
+    .product-card h3{font-size:1.2rem;margin-bottom:6px;color:#222;}
+    .product-desc{font-size:0.88rem;color:#777;margin-bottom:12px;line-height:1.4;}
+    .product-fabric{font-size:0.78rem;color:#555;font-weight:600;text-transform:uppercase;
+                    letter-spacing:0.5px;margin:4px 0 8px;}
+    .product-price{font-size:1.2rem;font-weight:700;color:#8b0000;margin-bottom:14px;}
+    .size-container{display:flex;justify-content:center;gap:5px;margin:8px 0;flex-wrap:wrap;}
+    .size-chip{border:1px solid #ddd;padding:3px 8px;font-size:0.75rem;border-radius:4px;
+               color:#444;transition:0.2s;cursor:pointer;}
+    .size-chip:hover{border-color:#8b0000;background:#fff0f0;}
+    .buy-btn-large{width:100%;background:#111;color:#fff;border:none;padding:12px;
+                   border-radius:6px;cursor:pointer;font-weight:600;letter-spacing:1px;
+                   text-transform:uppercase;transition:0.3s;font-family:'Poppins',sans-serif;}
+    .buy-btn-large:hover{background:#d4af37;color:#000;}
+    .back-link{text-decoration:none;color:#d4af37;font-weight:600;
+               display:inline-flex;align-items:center;gap:6px;margin-bottom:24px;font-size:0.9rem;}
+    .empty-state{text-align:center;padding:80px 20px;color:#888;font-size:1.1rem;}
+    /* header overrides for products page */
+    .header .nav a{background:#fff;color:#000;}
+    #cart-count{background:red;color:#fff;font-size:11px;padding:2px 6px;
+                border-radius:50%;margin-left:4px;font-weight:700;}
+  </style>
+</head>
+<body>
+
+<script>if(!localStorage.getItem('currentUser')) window.location.href='login.html';</script>
+
+<header class="header">
+  <div class="logo"><img src="zyra2.jpeg" alt="Zyra Logo"></div>
+  <nav class="nav">
+    <a href="index.html">HOME</a>
+    <a href="checkout.html">CART <span id="cart-count">0</span></a>
+  </nav>
+  <div class="header-right">
+    <button onclick="toggleMode()" class="mode-btn">&#9790;</button>
+    <button onclick="logout()" class="mode-btn">Logout</button>
+  </div>
+</header>
+
+<div class="product-page-container">
+  <a href="index.html" class="back-link">&larr; BACK TO SHOP</a>
+  <h1 id="cat-name" class="page-title">Collection</h1>
+  <p id="cat-desc" class="page-subtitle">Premium quality, handpicked for you.</p>
+  <div class="product-grid" id="product-list"></div>
+</div>
+
+<script>
+// ── Product Database ────────────────────────────────────────────
+const productData = {
+
+  /* ─── MEN ─── */
+  "men-ethnic": {
+    title: "Men's Ethnic Collection",
+    description: "Timeless traditional wear for the modern man.",
+    items: [
+      { name:"Royal Bandhgala",            price:7999,  img:"men-ethnic_1.webp", desc:"Classic structured fit for a regal appearance.",             fabric:"Raw Silk Cotton Blend",  sizes:["S","M","L","XL"] },
+      { name:"Sea Green Silk Sherwani",    price:9999,  img:"men-ethnic_2.webp", desc:"Elegance stitched in tradition, worn with pride.",           fabric:"Banarasi Silk",          sizes:["M","L","XL"] },
+      { name:"Rust Orange Silk Kurta",     price:12999, img:"men-ethnic_3.jpg",  desc:"Radiance in orange, tradition draped with grace.",           fabric:"Pure Chanderi Silk",     sizes:["S","M","L"] },
+      { name:"Earth Green Waistcoat Set",  price:11999, img:"men-ethnic_4.jpg",  desc:"Grace in green, where silk meets artistry.",                 fabric:"Hand-loomed Silk",       sizes:["M","L","XL","XXL"] },
+      { name:"Green Shaded Indo-Western",  price:8999,  img:"men-ethnic_5.jpg",  desc:"Opulent shades of green, silk draped in sophistication.",    fabric:"Art Silk",               sizes:["L","XL"] },
+      { name:"Brown Knitted Waistcoat",    price:4999,  img:"men-ethnic_6.jpg",  desc:"Sophistication woven in brown, perfect for celebrations.",   fabric:"Woolen Knit Blend",      sizes:["S","M","L"] }
+    ]
+  },
+  "men-shirt": {
+    title: "Men's Shirt Collection",
+    description: "Elegance stitched into every thread.",
+    items: [
+      { name:"Silver-tipped White Shirt",        price:1399, img:"men-shirt.webp",  desc:"Collars tipped in silver, designed for distinction.",     fabric:"100% Premium Giza Cotton", sizes:["S","M","L","XL","XXL"] },
+      { name:"Tan Nautical Embroidery Shirt",    price:1199, img:"men-shirt_2.webp", desc:"Tan threads, timeless nautical flair.",                   fabric:"Linen Blend",              sizes:["M","L","XL"] },
+      { name:"Black Botanical Embroidery Shirt", price:1399, img:"men-shirt_3.webp", desc:"Nature's detail meets urban edge.",                       fabric:"Cotton Satin",             sizes:["S","M","L"] },
+      { name:"Black Dragon Handwork Shirt",      price:2199, img:"men-shirt_4.webp", desc:"Handcrafted legend on dark canvas.",                      fabric:"Heavy Twill Cotton",       sizes:["M","L","XL"] },
+      { name:"Embroidered Panel White Shirt",    price:1299, img:"men-shirt_5.webp", desc:"White redefined with embroidered precision.",             fabric:"Poplin Cotton",            sizes:["S","M","L"] },
+      { name:"Mustard Motif Embroidery Shirt",   price:1599, img:"men-shirt_6.webp", desc:"Motifs stitched in golden warmth.",                       fabric:"Fine Cotton",              sizes:["L","XL","XXL"] }
+    ]
+  },
+  "men-t-shirt": {
+    title: "Men's T-Shirt Collection",
+    description: "Everyday essential, elevated.",
+    items: [
+      { name:"Beige Stripes Polo Tee",   price:1299, img:"men-t_1.webp", desc:"Classic polo, modern edge.",                              fabric:"Pique Cotton",         sizes:["M","L","XL"] },
+      { name:"Dusty Rose Crew Neck",     price:899,  img:"men-t_2.webp", desc:"Everyday comfort, elevated style.",                      fabric:"Combed Cotton",        sizes:["S","M","L"] },
+      { name:"Nova Stripe Polo",         price:999,  img:"men-t_3.webp", desc:"Breathable knit finish built for all-day comfort.",      fabric:"Cotton Piqué Knit",    sizes:["S","M","L","XL"] },
+      { name:"Sketch Grid Polo",         price:1499, img:"men-t_4.webp", desc:"Smooth finish for effortless comfort and standout style.",fabric:"Cotton Blend Jersey",  sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Velocity Stripe Polo",     price:999,  img:"men-t_5.webp", desc:"Bold vertical stripes for a sleek, modern edge.",        fabric:"Cotton Piqué Knit",    sizes:["S","M","L","XL"] },
+      { name:"Heritage Stripe Polo",     price:2999, img:"men-t_6.webp", desc:"Classic multi-stripes for a timeless, elevated look.",   fabric:"Cotton Piqué Knit",    sizes:["S","M","L"] }
+    ]
+  },
+  "men-jacket": {
+    title: "Men's Jacket Collection",
+    description: "Sharp silhouettes built to elevate your look.",
+    items: [
+      { name:"Pinstripe Edge Jacket",  price:14999, img:"men-j_1.jpeg",  desc:"Structured style and everyday comfort in durable twill.", fabric:"Cotton Blend Twill", sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Biker Jacket",     price:12999, img:"men-j_3.webp",   desc:"Classic biker silhouette with a premium matte finish.",   fabric:"Faux Leather",      sizes:["S","M","L","XL"] },
+      { name:"Cargo Jacket",     price:9999,  img:"men-j_2.webp",   desc:"Utility meets style in this street-ready cargo jacket.",  fabric:"Cotton Ripstop",    sizes:["M","L","XL","XXL"] },
+      { name:"Navy Blazer Jacket",     price:11999, img:"men-j_4.avif",   desc:"Smart navy blazer for formal and semi-casual wear.",      fabric:"Wool Poly Blend",   sizes:["S","M","L","XL","XXL"] },
+      { name : "Black biker jacket", price : 5999 , img : "men-j_5.png", desc : "Sleek black biker jacket with an edgy attitude, built to turn heads wherever you ride.", fabric : "Faux leather", sizes:["S","M","L","XL","XXL"] },
+      {name : "Blue demin jacket", price : 2999, img : "men-j_6.webp", desc : "Classic blue denim jacket with a timeless street-style vibe and versatile everyday look", fabric : "sturdy cotton denim fabric",  sizes:["S","M","L","XL","XXL"]},
+    ]
+  },
+  "men-polos": {
+    title: "Men's Polo Collection",
+    description: "Smart casual, effortlessly refined.",
+    items: [
+      { name:"Classic White Polo",   price:999,  img:"polos.webp", desc:"Timeless white polo, always in style.",                 fabric:"Pique Cotton",  sizes:["S","M","L","XL"] },
+      { name:"Navy Tipped Polo",     price:1199, img:"polos.webp", desc:"Navy contrast tipping for a clean, crisp look.",        fabric:"Pique Cotton",  sizes:["M","L","XL","XXL"] },
+      { name:"Olive Pigment Polo",   price:1099, img:"polos.webp", desc:"Earthy tone with premium pigment wash finish.",          fabric:"Combed Cotton", sizes:["S","M","L","XL"] }
+    ]
+  },
+  "men-lower": {
+    title: "Men's Bottoms Collection",
+    description: "Comfort and style from the waist down.",
+    items: [
+      { name:"White Joggers",  price:599, img:"white lower.webp", desc:"Soft, breathable joggers for all-day wear.",            fabric:"Cotton Fleece",   sizes:["S","M","L","XL","XXL"] },
+      { name:"Cargo Pants",    price:999, img:"cargos.avif",      desc:"Multi-pocket utility cargo in a relaxed fit.",          fabric:"Polyester Blend", sizes:["S","M","L","XL","XXL"] },
+      { name:"Track Pants",    price:699, img:"white lower.webp", desc:"Lightweight track pants built for movement.",           fabric:"Nylon Blend",     sizes:["S","M","L","XL"] }
+    ]
+  },
+
+  /* ─── WOMEN ─── */
+  "women-ethnic": {
+    title: "Women's Ethnic Collection",
+    description: "Where heritage meets modern allure.",
+    items: [
+      { name:"Red Satin Lehenga Set",        price:10999, img:"women-e_1.jpg",  desc:"Royal satin fabric offering a sleek glossy finish.",             fabric:"Satin",               sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Beige Chanderi Suit Set",       price:5999,  img:"women-e_2.jpg",  desc:"Lightweight, subtly lustrous Chanderi for an elegant look.",     fabric:"Silk-cotton blend",   sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Green Bandhani Suit Set",       price:3999,  img:"women-e_3.jpg",  desc:"Soft Bandhani fabric with traditional tie-dye charm.",           fabric:"Silk",                sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Hand-painted Suit Set",         price:2999,  img:"women-e_4.webp", desc:"Artisanal hand-painted detailing for an elegant look.",          fabric:"Cotton",              sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Red Doria Suit",                price:5999,  img:"women-e_5.webp", desc:"Lightweight, sheer, airy, and effortlessly graceful.",           fabric:"Silk-cotton blend",   sizes:["S","M","L","XL","XXL","XXXL"] },
+      { name:"Handblock Gota Suit Set",       price:6999,  img:"women-e_6.webp", desc:"Breathable fabric with handblock prints and gota accents.",      fabric:"Silk-cotton blend",   sizes:["S","M","L","XL","XXL","XXXL"] }
+    ]
+  },
+  "women-tops": {
+    title: "Women's Tops Collection",
+    description: "From casual to chic — tops for every occasion.",
+    items: [
+      { name:"Ivory Ruffle Blouse",  price:799, img:"women tops.webp",  desc:"Delicate ruffles in soft ivory for a feminine touch.", fabric:"Georgette",     sizes:["XS","S","M","L","XL"] },
+      { name:"Black Crop Top",       price:599, img:"women tops.webp",  desc:"Minimal and bold, a wardrobe essential.",             fabric:"Cotton Blend",  sizes:["S","M","L","XL"] },
+      { name:"Printed Boho Top",     price:899, img:"women tops.webp",  desc:"Vibrant prints for a free-spirited look.",            fabric:"Rayon",         sizes:["S","M","L","XL","XXL"] }
+    ]
+  },
+  "women-lower": {
+    title: "Women's Bottoms Collection",
+    description: "Flattering fits for every body and every day.",
+    items: [
+      { name:"High-waist Denims",     price:1499, img:"denims.jpg",          desc:"Classic high-waist cut with a comfortable stretch.",        fabric:"Denim Stretch", sizes:["26","28","30","32","34"] },
+      { name:"Wide-leg Trousers",     price:1299, img:"women bottoms.jpeg",  desc:"Flowy wide-leg silhouette for effortless elegance.",        fabric:"Crepe",         sizes:["S","M","L","XL"] },
+      { name:"Floral Midi Skirt",     price:999,  img:"women bottoms.jpeg",  desc:"Soft floral print in a flattering midi length.",            fabric:"Chiffon",       sizes:["XS","S","M","L","XL"] }
+    ]
+  },
+  "women-coat": {
+    title: "Women's Over-Coats Collection",
+    description: "Layer up in luxury.",
+    items: [
+      { name:"Camel Wool Overcoat",   price:5999, img:"over coats women.jpg", desc:"Structured camel overcoat for a polished winter look.", fabric:"Wool Blend",         sizes:["S","M","L","XL"] },
+      { name:"Plaid Longline Coat",   price:6499, img:"over coats women.jpg", desc:"Classic plaid in a sleek longline silhouette.",         fabric:"Tweed Blend",        sizes:["S","M","L","XL","XXL"] },
+      { name:"Cream Quilted Puffer",  price:3999, img:"over coats women.jpg", desc:"Lightweight warmth in a stylish quilted finish.",       fabric:"Recycled Polyester", sizes:["XS","S","M","L","XL"] }
+    ]
+  },
+  "women-dresses": {
+    title: "Women's Dresses Collection",
+    description: "Wear a moment, make a memory.",
+    items: [
+      { name:"Floral Wrap Dress",    price:1799, img:"dresses.webp", desc:"Effortlessly flattering wrap silhouette in floral print.", fabric:"Rayon",  sizes:["XS","S","M","L","XL"] },
+      { name:"Black Bodycon Dress",  price:1499, img:"dresses.webp", desc:"Sleek bodycon cut for a confident, bold look.",           fabric:"Ponte",  sizes:["S","M","L","XL"] },
+      { name:"Linen Shirt Dress",    price:2199, img:"dresses.webp", desc:"Breezy linen shirt dress for casual-chic days.",          fabric:"Linen Blend", sizes:["S","M","L","XL","XXL"] }
+    ]
+  },
+  "women-sports": {
+    title: "Women's Athleisure Collection",
+    description: "Performance meets style — from gym to street.",
+    items: [
+      { name:"High-waist Leggings",  price:899,  img:"athleisure.jpeg", desc:"Four-way stretch with a sculpting waistband.",          fabric:"Nylon Spandex",       sizes:["XS","S","M","L","XL"] },
+      { name:"Sports Bra Top",       price:699,  img:"athleisure.jpeg", desc:"Medium-support with moisture-wicking fabric.",          fabric:"Polyester Spandex",   sizes:["XS","S","M","L"] },
+      { name:"Jogger Co-ord Set",    price:1599, img:"athleisure.jpeg", desc:"Matching co-ord jogger set for gym and beyond.",        fabric:"French Terry Cotton", sizes:["S","M","L","XL","XXL"] }
+    ]
+  },
+
+  /* ─── KIDS ─── */
+  "kid-infant": {
+    title: "Infant Collection (0–12 months)",
+    description: "Soft, safe, and adorable for your little one.",
+    items: [
+      { name:"Organic Cotton Onesie", price:399, img:"kids-1.webp", desc:"Ultra-soft 100% organic cotton onesie for newborns.", fabric:"Organic Cotton", sizes:["0-3M","3-6M","6-12M"] },
+      { name:"Knit Romper Set",       price:599, img:"kid-2.webp", desc:"Cosy knit romper with matching booties.",             fabric:"Cotton Knit",    sizes:["0-3M","3-6M","6-12M"] },
+      { name:"Floral Dungaree",       price:499, img:"kid-3.jpeg", desc:"Cheerful floral print dungaree for baby girls.",      fabric:"Soft cotton",     sizes:["3-6M","6-12M"] },
+      { name : "teddy-style winter outfit", price : 999 , img : "kid-4.webp", desc : "Cute teddy-style baby winter outfit with a soft cozy look.", fabric : "Soft plush fleece fabric for warmth and comfort.", sizes:["0-3M","3-6M","6-12M"] },
+      {name : "Baby Winter Co-ord Set", price : 899, img : "kid-5.webp" , desc : "Soft and cozy baby outfit with a cute winter-ready look.", fabric : "Warm velvet fleece fabric with a soft inner lining.", sizes:["0-3M","3-6M","6-12M"] },
+      {name : "Floral Baby Girl Dress", price : 1999, img : "kid-6.webp", desc : "Cute floral dress with a soft and playful look.", fabric : "Lightweight cotton fabric", sizes:["0-3M","3-6M","6-12M"] }
+    ]
+  },
+  "kids-toddler": {
+    title: "Toddler Collection (1–3 years)",
+    description: "Playful outfits for curious little explorers.",
+    items: [
+      { name:"Dino Print T-Shirt", price:349, img:"toddler.jpg",      desc:"Fun dino print on breathable cotton.",                   fabric:"100% Cotton",  sizes:["1Y","2Y","3Y"] },
+      { name:"Rainbow Dungaree",   price:599, img:"toddler.jpg",      desc:"Bright rainbow dungaree for playful days.",              fabric:"Cotton Denim", sizes:["1Y","2Y","3Y"] },
+      { name:"Floral Frock",       price:499, img:"toddler girl.webp",desc:"Soft floral frock with a bow at the back.",              fabric:"Cotton Voile", sizes:["1Y","2Y","3Y"] }
+    ]
+  },
+  "kids-girls": {
+    title: "Girls Collection (3–10 years)",
+    description: "Dreamy styles for your little princess.",
+    items: [
+      { name:"Tutu Party Dress",    price:799, img:"toddler girl.webp", desc:"Fluffy tutu dress perfect for parties.",               fabric:"Net + Satin",    sizes:["3Y","4Y","5Y","6Y","7Y","8Y"] },
+      { name:"Printed Co-ord Set",  price:699, img:"toddler girl.webp", desc:"Matching top and pants in a fun printed fabric.",      fabric:"Cotton Blend",   sizes:["4Y","5Y","6Y","7Y","8Y","10Y"] },
+      { name:"Denim Pinafore",      price:599, img:"toddler girl.webp", desc:"Classic pinafore in soft stretch denim.",              fabric:"Stretch Denim",  sizes:["3Y","4Y","5Y","6Y","7Y","8Y"] }
+    ]
+  },
+  "kids-boy": {
+    title: "Boys Collection (3–10 years)",
+    description: "Bold and cool styles for your little champ.",
+    items: [
+      { name:"Graphic Tee + Shorts", price:599, img:"toddler boy.jpg", desc:"Cool graphic tee matched with elastic shorts.",        fabric:"Jersey Cotton",  sizes:["3Y","4Y","5Y","6Y","7Y","8Y"] },
+      { name:"Cargo Shorts",         price:449, img:"toddler boy.jpg", desc:"Rugged cargo shorts with multiple pockets.",           fabric:"Cotton Twill",   sizes:["4Y","5Y","6Y","7Y","8Y","10Y"] },
+      { name:"Striped Polo Shirt",   price:499, img:"toddler boy.jpg", desc:"Smart striped polo for casual outings.",               fabric:"Pique Cotton",   sizes:["3Y","4Y","5Y","6Y","7Y","8Y"] }
+    ]
+  },
+  "kids-schooler": {
+    title: "5–9 Years Collection",
+    description: "Comfortable everyday styles for school and play.",
+    items: [
+      { name:"Uniform Combo Set",  price:699,  img:"schooler.jpg", desc:"Neat, durable uniform set for school days.",           fabric:"Cotton Poly Blend", sizes:["5Y","6Y","7Y","8Y","9Y"] },
+      { name:"Casual Hoodie",      price:799,  img:"schooler.jpg", desc:"Soft hooded sweatshirt for after-school cool.",        fabric:"French Terry",      sizes:["5Y","6Y","7Y","8Y","9Y"] },
+      { name:"Sports Track Suit",  price:999,  img:"schooler.jpg", desc:"Breathable track suit for PE and outdoor activities.", fabric:"Polyester Blend",   sizes:["5Y","6Y","7Y","8Y","9Y"] }
+    ]
+  },
+  "kids-teens": {
+    title: "9–12 Years Collection",
+    description: "Trendy picks for your growing teen.",
+    items: [
+      { name:"Tie-Dye Hoodie",          price:1099, img:"pre-teen.jpg", desc:"Vibrant tie-dye hoodie that stands out from the crowd.", fabric:"Cotton Fleece",   sizes:["9Y","10Y","11Y","12Y"] },
+      { name:"Ripped Jeans",            price:1299, img:"pre-teen.jpg", desc:"Trendy slim-fit ripped jeans for the fashion-forward.",  fabric:"Stretch Denim",  sizes:["9Y","10Y","11Y","12Y"] },
+      { name:"Graphic Oversized Tee",   price:699,  img:"pre-teen.jpg", desc:"Bold graphic print in a relaxed oversized fit.",         fabric:"Combed Cotton",  sizes:["9Y","10Y","11Y","12Y"] }
+    ]
+  },
+
+  /*------------shoes section----------*/
+  "shoes-sports":{
+    title : "Sport shoes",
+    description: "Lightweight performance sneakers designed for unmatched comfort, energy, and effortless everyday style.",
+    items : [
+      {name : "Gym trainig shoes", price : 1999, img : "sport-1.webp", desc : "crafted for high-performance comfort and a sleek athletic edge.", sizes:[6, 7, 8, 9, 10]},
+      {name : "Green sport shoes", price : 2999, img : "sport-2.webp", desc : "crafted to elevate your formals and casual look", sizes : [6, 7, 8, 9] },
+      {name : "Echo-slip speed shoes", price : 17999, img : "sport-3.webp", desc : "colour changing shoes for your #ootd", sizes :[6, 7, 8, 9]  },
+      {name : "Gym outdoor sneakers", price : 5999, img :"sport-4.webp", desc : "Trendy casual shoes", sizes : [6, 7, 8, 9, 10]},
+      {name : "Atom Phantom shoes", price : 6999, img : "sport-5.webp", desc :"Unicorn coloured unisex shoes", sizes : [6, 7, 8, 9, 10]},
+      {name : "Cherry red shoes", price : 2999, img : "sport-6.webp", desc : "Cherry red shoes to make a statement look", sizes : [6, 7, 8]},
+    ]
+  },
+
+  /*--------perfumes--------*/
+ "perfume-woody":{
+  title : "Woody perfumes",
+  description : "Woody fragrances with warm, earthy notes that leave a rich and timeless impression.",
+  items : [
+    {
+      name:"Oud Noir",
+      price:2999,
+      img:"p-1.jpg",
+      desc:"Deep woody fragrance with rich oud notes.",
+      fabric:"Eau De Parfum",
+      sizes:["50ml","100ml"]
+    },
+    {
+      name:"Cedar Essence",
+      price:2499,
+      img:"p-2.jpg",
+      desc:"Warm cedarwood scent with a smooth finish.",
+      fabric:"Eau De Parfum",
+      sizes:["50ml","100ml"]
+    },
+    {
+      name:"Sandal Bloom",
+      price:2799,
+      img:"p-3.webp",
+      desc:"Creamy sandalwood blended with earthy tones.",
+      fabric:"Perfume Oil",
+      sizes:["50ml"]
+    },
+    {
+      name:"Amber Wood",
+      price:3199,
+      img:"p-4.webp",
+      desc:"Bold woody aroma with warm amber depth.",
+      fabric:"Eau De Parfum",
+      sizes:["100ml"]
+    },
+    {
+      name:"Forest Mist",
+      price:2299,
+      img:"p-5.webp",
+      desc:"Fresh earthy fragrance inspired by nature.",
+      fabric:"Body Mist",
+      sizes:["120ml"]
+    },
+    {
+      name:"Velvet Oud",
+      price:3499,
+      img:"p-6.webp",
+      desc:"Luxury oud fragrance with smoky richness.",
+      fabric:"Extrait De Parfum",
+      sizes:["50ml","100ml"]
+    }
+  ]
+},
+
+"accessories-jewellery": {
+  title: "Jewellery Collection",
+  description: "Elegant jewellery pieces to complete your look.",
+  items: [
+    {
+      name:"Silver Chain",
+      price:1999,
+      img:"j-1.webp",
+      desc:"Minimal silver chain with a premium finish."
+    },
+    {
+      name : "Cyan necklace set",
+      price : 5999,
+      img : "j-2.webp",
+      desc : "Cyan necklace and earings to compliment your ethnic outfits",
+      
+    },
+    {name :"Pink and blue necklace set",
+      price : 4999,
+      img : "j-3.jpeg",
+      desc : "Pink and blue necklace set with gold plated premium finish"
+    },
+    {name : "Emerald Layered Rajwadi Haar",
+      price : 8999,
+      img : "j-4.webp",
+      desc : "A regal multi-layered emerald and pearl necklace set that adds royal elegance to the ivory sherwani look."
+    },
+    {name : "Trinity Circle Pendant Necklace",
+      price : 1999,
+      img : "j-5.webp",
+      desc : "A sleek silver pendant necklace with a modern geometric design, perfect for a bold and minimal street-style look."
+    },
+    {name : "Royal Kundan Choker Set",
+      price : 10999,
+      img : "j-6.webp",
+      desc : "Elegant kundan bridal set with timeless royal charm."
+    }
+
+  ]
+},
+
+"accessories-handbags": {
+  title: "Handbags Collection",
+  description: "Luxury handbags crafted for modern elegance.",
+  items: [
+    {
+      name:"Classic Leather Handbag",
+      price:3999,
+      img:"handbags female.jpeg",
+      desc:"Elegant structured handbag for everyday style.",
+      fabric:"Vegan Leather",
+      sizes:["Free Size"]
+    }
+  ]
+},
+
+"accessories-belts": {
+  title: "Belts Collection",
+  description: "Statement belts to elevate every outfit.",
+  items: [
+    {
+      name:"Classic Brown Belt",
+      price:99,
+      img:"female belts.webp",
+      desc:"Sleek everyday belt with premium buckle finish.",
+      fabric:"Faux Leather",
+      sizes:["S","M","L"]
+    }
+  ]
+},
+
+"accessories-watches": {
+  title: "Watches Collection",
+  description: "Timeless watches designed for sophistication.",
+  items: [
+    {
+      name:"Luxury Chronograph Watch",
+      price:7999,
+      img:"male watches.jpeg",
+      desc:"Premium chronograph watch with modern detailing.",
+      fabric:"Stainless Steel",
+      sizes:["Free Size"]
+    }
+  ]
+},
+
+};
+
+
+
+// ── Helpers ───────────────────────────────────────────────────
+const CART_KEY = 'zyracart';
+function getCart()       { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+function saveCart(c)     { localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+
+function updateCartCount() {
+  const count = getCart().reduce((t, i) => t + i.quantity, 0);
+  const el = document.getElementById('cart-count');
+  if (el) el.innerText = count;
+}
+
+function addToCart(name, price) {
+  const cart     = getCart();
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.quantity += 1; } else { cart.push({ name, price, quantity: 1 }); }
+  saveCart(cart);
+  updateCartCount();
+  showToast('🛍️ ' + name + ' added to bag!');
+}
+
+function showToast(msg) {
+  const old = document.querySelector('.toast-notification');
+  if (old) old.remove();
+  const t = document.createElement('div');
+  t.className = 'toast-notification';
+  t.innerText = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function toggleMode() { document.body.classList.toggle('dark-mode'); }
+function logout()     { localStorage.removeItem('currentUser'); window.location.href = 'login.html'; }
+
+// ── Init ─────────────────────────────────────────────────────
+function initPage() {
+  updateCartCount();
+  const catKey   = new URLSearchParams(window.location.search).get('cat');
+  const category = productData[catKey];
+  const list     = document.getElementById('product-list');
+
+  if (category) {
+    document.getElementById('cat-name').innerText = category.title;
+    document.getElementById('cat-desc').innerText = category.description;
+    document.title = 'ZYRA — ' + category.title;
+    list.innerHTML = '';
+
+    category.items.forEach(item => {
+      const safeName = item.name.replace(/'/g, "\\'");
+      const sizes    = (item.sizes || []).map(s => `<span class="size-chip">${s}</span>`).join('');
+      const card     = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.name}" loading="lazy"
+             onerror="this.src='https://picsum.photos/seed/${encodeURIComponent(item.name)}/400/300'">
+        <h3>${item.name}</h3>
+        ${item.fabric ? `<p class="product-fabric">${item.fabric}</p>` : ''}
+        <p class="product-desc">${item.desc}</p>
+        ${sizes ? `<div class="size-container">${sizes}</div>` : ''}
+        <div class="product-price">&#8377;${Number(item.price).toLocaleString('en-IN')}</div>
+        <button class="buy-btn-large" onclick="addToCart('${safeName}', ${item.price})">ADD TO BAG</button>`;
+      list.appendChild(card);
+    });
+  } else {
+    list.innerHTML = '<div class="empty-state">✨ This collection is coming soon!</div>';
+  }
+}
+
+window.onload = initPage;
+</script>
+</body>
+</html>

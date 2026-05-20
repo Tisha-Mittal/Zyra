@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYRA — Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#f8f6f1;font-family:'Poppins',sans-serif;min-height:100vh;}
+
+    /* ── Header ── */
+    .co-header{background:linear-gradient(90deg,#0f0f0f,#2b2b2b);padding:16px 40px;
+               display:flex;align-items:center;gap:20px;
+               border-bottom:1px solid rgba(212,175,55,0.3);}
+    .co-header a{color:#d4af37;text-decoration:none;font-weight:600;font-size:0.9rem;}
+    .co-header .brand{color:#fff;font-family:'Playfair Display',serif;font-size:1.3rem;letter-spacing:3px;}
+
+    /* ── Layout ── */
+    .co-wrap{max-width:900px;margin:40px auto;padding:0 20px;
+             display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+
+    /* ── Cards ── */
+    .card{background:#fff;padding:28px;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.07);}
+    .card h3{font-size:1rem;font-weight:700;margin-bottom:20px;letter-spacing:1px;
+             text-transform:uppercase;border-bottom:2px solid #d4af37;padding-bottom:10px;color:#111;}
+
+    /* ── Cart Items ── */
+    .cart-item{display:flex;justify-content:space-between;align-items:center;
+               padding:12px 0;border-bottom:1px solid #f0ece4;}
+    .cart-item:last-of-type{border-bottom:none;}
+    .item-info strong{display:block;font-size:0.95rem;color:#111;}
+    .item-info small{color:#888;font-size:0.8rem;}
+    .item-controls{display:flex;align-items:center;gap:8px;margin-top:4px;}
+    .qty-btn{background:#f0ece4;border:none;width:26px;height:26px;border-radius:50%;
+             font-size:1rem;cursor:pointer;font-weight:bold;transition:0.2s;}
+    .qty-btn:hover{background:#d4af37;}
+    .qty-num{font-weight:700;min-width:20px;text-align:center;}
+    .item-price{font-weight:700;color:#8b0000;font-size:0.95rem;white-space:nowrap;}
+    .remove-btn{background:none;border:none;color:#ccc;font-size:1rem;cursor:pointer;
+                margin-left:8px;transition:0.2s;}
+    .remove-btn:hover{color:#ff4444;}
+
+    .grand-total{margin-top:18px;text-align:right;font-size:1.1rem;font-weight:700;
+                 color:#111;border-top:2px solid #d4af37;padding-top:14px;}
+
+    /* ── Empty Cart ── */
+    .empty-cart{text-align:center;padding:40px 20px;color:#aaa;}
+    .empty-cart p{font-size:1rem;margin-bottom:12px;}
+    .empty-cart a{color:#d4af37;font-weight:600;text-decoration:none;}
+
+    /* ── Payment Card ── */
+    .dark-card{background:#111;color:#fff;}
+    .dark-card h3{color:#d4af37;border-bottom-color:#d4af37;}
+    .dark-card label{font-size:0.75rem;color:#aaa;display:block;margin:14px 0 4px;
+                     letter-spacing:1px;text-transform:uppercase;}
+    .dark-card input{width:100%;padding:10px 14px;border-radius:6px;
+                     border:1px solid #333;background:#1c1c1c;color:#fff;
+                     font-size:0.9rem;font-family:'Poppins',sans-serif;}
+    .dark-card input:focus{outline:none;border-color:#d4af37;}
+    .card-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .confirm-btn{width:100%;padding:14px;background:#d4af37;border:none;color:#000;
+                 font-weight:700;font-size:1rem;letter-spacing:1px;border-radius:8px;
+                 cursor:pointer;margin-top:20px;transition:0.3s;}
+    .confirm-btn:hover{background:#b8962e;}
+
+    @media(max-width:640px){.co-wrap{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<script>if(!localStorage.getItem('currentUser')) window.location.href='login.html';</script>
+
+<div class="co-header">
+  <a href="index.html">&larr; Back to Shop</a>
+  <span class="brand">ZYRA</span>
+  <span style="color:#888;font-size:0.85rem;margin-left:auto;">Secure Checkout</span>
+</div>
+
+<div class="co-wrap">
+  <!-- Order Summary -->
+  <div class="card">
+    <h3>Your Bag</h3>
+    <div id="cart-items-list"></div>
+    <div class="grand-total" id="grand-total" style="display:none;"></div>
+  </div>
+
+  <!-- Payment -->
+  <div class="card dark-card">
+    <h3>Payment Details</h3>
+    <label>Cardholder Name</label>
+    <input type="text" id="cardName" placeholder="Full name on card">
+    <label>Card Number</label>
+    <input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19"
+           oninput="this.value=this.value.replace(/[^0-9]/g,'').replace(/(.{4})/g,'$1 ').trim()">
+    <div class="card-row">
+      <div>
+        <label>Expiry</label>
+        <input type="text" id="cardExp" placeholder="MM / YY" maxlength="7">
+      </div>
+      <div>
+        <label>CVV</label>
+        <input type="password" id="cardCvv" placeholder="•••" maxlength="3">
+      </div>
+    </div>
+    <button class="confirm-btn" onclick="confirmOrder()">COMPLETE PURCHASE</button>
+  </div>
+</div>
+
+<script>
+const CART_KEY = 'zyracart';
+function fmt(n){ return '₹' + Number(n).toLocaleString('en-IN'); }
+function getCart(){ return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+
+function renderCart() {
+  const cart    = getCart();
+  const listDiv = document.getElementById('cart-items-list');
+  const totDiv  = document.getElementById('grand-total');
+  listDiv.innerHTML = '';
+
+  if (cart.length === 0) {
+    listDiv.innerHTML = '<div class="empty-cart"><p>Your bag is empty.</p><a href="index.html">Continue Shopping &rarr;</a></div>';
+    totDiv.style.display = 'none';
+    return;
+  }
+
+  let total = 0;
+  cart.forEach((item, idx) => {
+    total += item.price * item.quantity;
+    const row = document.createElement('div');
+    row.className = 'cart-item';
+    row.innerHTML = `
+      <div class="item-info">
+        <strong>${item.name}</strong>
+        <div class="item-controls">
+          <button class="qty-btn" onclick="changeQty(${idx},-1)">−</button>
+          <span class="qty-num">${item.quantity}</span>
+          <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+        </div>
+        <small>${item.quantity} &times; ${fmt(item.price)}</small>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="item-price">${fmt(item.price * item.quantity)}</div>
+        <button class="remove-btn" onclick="removeItem(${idx})" title="Remove">✕</button>
+      </div>`;
+    listDiv.appendChild(row);
+  });
+  totDiv.style.display = 'block';
+  totDiv.innerText = 'Total: ' + fmt(total);
+}
+
+function changeQty(idx, delta) {
+  const cart = getCart();
+  cart[idx].quantity += delta;
+  if (cart[idx].quantity <= 0) cart.splice(idx, 1);
+  saveCart(cart);
+  renderCart();
+}
+function removeItem(idx) {
+  const cart = getCart();
+  cart.splice(idx, 1);
+  saveCart(cart);
+  renderCart();
+}
+
+function confirmOrder() {
+  const name = document.getElementById('cardName').value.trim();
+  const num  = document.getElementById('cardNum').value.replace(/\s/g,'');
+  if (!name || num.length < 16) {
+    alert('⚠️ Please fill in your payment details correctly!');
+    return;
+  }
+  alert('🎉 Order Placed Successfully!\nThank you for shopping with ZYRA. Your order is being processed.');
+  localStorage.removeItem(CART_KEY);
+  window.location.href = 'index.html';
+}
+
+renderCart();
+</script>
+</body>
+</html>
